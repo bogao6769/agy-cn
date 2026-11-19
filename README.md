@@ -1,8 +1,8 @@
 # 反重力中文增强补丁（agy-cn）
 
-[![Version](https://img.shields.io/badge/version-v1.2-4A9EFF)](../../releases)
+[![Version](https://img.shields.io/badge/version-v1.3-4A9EFF)](../../releases)
 [![Platform](https://img.shields.io/badge/platform-Windows-blue)](#安装)
-[![Antigravity](https://img.shields.io/badge/Antigravity-v2.25.0-A98BFF)](https://antigravity.google)
+[![Antigravity](https://img.shields.io/badge/Antigravity-v2.33.0-A98BFF)](https://antigravity.google)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 给 **Google Antigravity 桌面版** 加两样东西：
@@ -20,7 +20,7 @@
 
 从 [Releases](../../releases) 下载 `agy-cn-v*.zip` 并解压，双击 `install.bat`（或命令行 `python install.py`），然后**从托盘完整退出 Antigravity 再重新打开**。
 
-安装脚本会做三件事：
+安装脚本会做四件事：
 
 | 步骤 | 内容 |
 | --- | --- |
@@ -79,7 +79,7 @@ const RULES = [ [/^Worked for (.+)$/, '工作用时 $1'], ... ]; // 带变量的
 - **自动更新已被关闭**（`startAutoUpdateChecks` 改成空函数）：应用不会再后台检查/下载新版本，补丁也就不会被覆盖。
   菜单里手动的「检查更新」仍然可用；想彻底恢复自动更新，跑 `restore.bat` 还原官方 `app.asar` 即可。
 - 如果哪天手动升级了应用（或重装），补丁会失效 —— 重新跑一次 `install.bat` 就行，它会检测到新版本并用当前文件重建备份。
-- 现在的 UI 是 2.25.0 的；设置页（通用/应用/外观/通知/模型与用量/快捷键/反馈/账号）已整体汉化。
+- 当前适配 **Antigravity v2.33.0**；设置页（通用/外观/快捷键/模型/自定义/浏览器/对话/反馈/账号）已整体汉化。
 - 汉化是 DOM 层的，少数动态提示（输入框轮播的 hint）在切换瞬间可能出现一次英文/中英混排，下一帧会恢复。
 - 模型名和档位（`Gemini 4 Argon`、`Medium` / `High`）故意保留英文，避免和额度对照时认错。
 - 如果窗口里看不到组件：应用内按 `Ctrl+Shift+I` 打开开发者工具，控制台里 `[agy-cn]` 开头的日志会说明原因（正常应看到 `preload bootstrap ok`，每次拉数还会打印 `[agy-cn] 模型配置：` 的模型清单）。

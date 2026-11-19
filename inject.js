@@ -212,6 +212,84 @@
     'Clear': '清空',
     'Clear all': '全部清空',
 
+    // ===== 2.33 新增文案 / 未覆盖按钮 =====
+    'Give Feedback': '提供反馈',
+    'Voice mode': '语音模式',
+    'Microphone': '麦克风',
+    'Input device for voice mode and dictation.': '语音模式和听写使用的输入设备。',
+    'System default': '系统默认',
+    'Chat': '对话',
+    'Conversation Steps': '对话步骤',
+    'Choose how much detail is shown during a conversation.': '选择对话过程中显示内容的详细程度。',
+    'Verbose': '详细',
+    'Font': '字体',
+    'Font Size': '字号',
+    'Code Preview': '代码预览',
+    'No token data available.': '暂无 Token 用量数据。',
+    'Plugin:': '插件：',
+    'Agent settings and permissions for conversations outside of projects.': '项目之外对话的智能体设置与权限。',
+    'Agent Settings': '智能体设置',
+    'Inherit Global': '继承全局设置',
+    'Local Permissions': '本地权限',
+    'Also includes': '还包括',
+    'when working': '在工作时',
+    'in these conversations': '在这些对话中',
+    'File Access Rules': '文件访问规则',
+    'Configure allowed and denied paths for file reads and writes.': '配置文件读写的允许与禁止路径。',
+    'Terminal Commands': '终端命令',
+    'Configure allowed terminal commands.': '配置允许的终端命令。',
+    'MCP Tools': 'MCP 工具',
+    'Configure external tools via Model Context Protocol.': '通过 Model Context Protocol 配置外部工具。',
+    'Error Loading Models': '模型加载失败',
+    'No Model Selected': '未选择模型',
+    "Good to see you. What's next?": '很高兴见到你，接下来做什么？',
+
+    // 按钮 aria-label（含对话行内的按钮，这些行本身的内容不翻译）
+    'Display Options': '显示选项',
+    'Create New Project': '新建项目',
+    'Archive conversation': '归档对话',
+    'Unarchive conversation': '取消归档',
+    'Pin conversation': '置顶对话',
+    'Unpin conversation': '取消置顶',
+    'Rename conversation': '重命名对话',
+    'Delete conversation': '删除对话',
+    'More options': '更多选项',
+    'Scroll to bottom': '滚动到底部',
+    'Regenerate': '重新生成',
+    'Edit message': '编辑消息',
+
+    // ===== 2.33 设置页第二补充 =====
+    'Hey there, what should we build today?': '嗨，今天我们做点什么？',
+    'Global': '全局',
+    'Installed MCP Servers': '已安装的 MCP 服务器',
+    'Add MCP': '添加 MCP',
+    'Browser Subagent': '浏览器子智能体',
+    'Open Command Palette': '打开命令面板',
+    'Move Conversation Up': '上移对话',
+    'Move Conversation Down': '下移对话',
+    'Previous Side Panel Tab': '上一个侧边面板标签',
+    'Next Side Panel Tab': '下一个侧边面板标签',
+    'Open Keyboard Shortcuts': '打开快捷键设置',
+    'Open Conversation in New Tab': '在新标签页打开对话',
+    'Click': '单击',
+    'Middle Click': '中键单击',
+    'Jump to Previous Prompt': '跳到上一条提问',
+    'Jump to Next Prompt': '跳到下一条提问',
+    'Cancel Generation': '取消生成',
+    'Toggle Project Selector': '切换项目选择器',
+    'Toggle Environment Selector': '切换环境选择器',
+    'Start Voice Recording': '开始语音录制',
+    'Find in Conversation': '在对话中查找',
+    'Comment on Selection': '评论所选内容',
+    'Pin / Unpin Conversation': '置顶 / 取消置顶对话',
+    'Toggle Side Panel': '切换侧边面板',
+    'Split Terminal': '拆分终端',
+    'New Terminal Tab': '新建终端标签页',
+    'Terminal: Add to Chat': '终端：添加到对话',
+    'Terminal: Select All': '终端：全选',
+    'Model Quota': '模型额度',
+    'Developer-only tools. These settings do not affect other users.': '开发者专用工具。这些设置不影响其他用户。',
+
     // ===== 设置页 · 左侧导航 =====
     'App': '应用',
     'Models & Usage': '模型与用量',
@@ -462,6 +540,7 @@
     [/^You have hit your weekly limit, it refreshes in (.+)\. If on a supported paid plan, you can use AI credits in the interim or upgrade to a higher tier\.$/, '本周额度已用完，将在 $1后恢复。若你使用的是受支持的付费套餐，可在此期间使用 AI 额度，或升级到更高档位。'],
     [/^You have hit your weekly limit, the 5-hour limit does not currently apply\. Your weekly limit will fully refresh in (.+)\.$/, '本周额度已用完，5 小时额度当前不适用。本周额度将在 $1后完全恢复。'],
     [/^(.+) Weekly Limit$/, '$1 周额度'],
+    [/^(\d+) tools? enabled$/, '已启用 $1 个工具'],
   ];
 
   // 把英文时间单位换成中文：3 days, 7 hours -> 3 天 7 小时
@@ -536,6 +615,16 @@
 
   let queue = [];
   let scheduled = false;
+  // 按钮上的固定文案（aria-label/title）单独处理：即使按钮位于对话行内也不放过，
+  // 但对话标题/正文仍然受 SKIP_SEL 保护。
+  function translateButtonAttrs() {
+    const els = document.querySelectorAll('button[aria-label],button[title],a[aria-label],a[title],[role="button"][aria-label]');
+    for (const el of els) {
+      if (el.closest('code, pre')) continue;
+      translateAttrs(el);
+    }
+  }
+
   const flush = () => {
     scheduled = false;
     const items = queue;
@@ -545,6 +634,7 @@
         walk(it);
       } catch (e) { /* ignore */ }
     }
+    translateButtonAttrs();
   };
   const schedule = (node) => {
     queue.push(node);
@@ -556,6 +646,7 @@
 
   function startI18n() {
     walk(document.body);
+    translateButtonAttrs();
     const mo = new MutationObserver((records) => {
       for (const r of records) {
         if (r.type === 'characterData') {

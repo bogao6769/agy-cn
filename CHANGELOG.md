@@ -1,5 +1,13 @@
 # 变更日志
 
+## v1.3 (2026-11-19)
+
+- 适配 Antigravity **v2.33.0**：补齐新版设置页按钮与文案汉化（Give Feedback、Voice mode、Conversation Steps、Installed MCP Servers、File Access Rules、Model Quota、快捷键命令等约 60 条）。
+- 按钮的 `aria-label` / `title` 单独处理：对话行里的「归档 / 置顶 / 更多选项」等按钮也汉化，但对话标题和正文依然不翻译。
+- 新增 `N tools enabled` → `已启用 N 个工具` 等正则。
+- 保留产品名与模型名（Turbo、MCP、Google Sans、Google Chrome、skill 名）。
+
+
 ## v1.2 (2026-10-24)
 
 - **新增 4Argon（蓝色）独立额度电池**：Gemini 4 Argon 的周额度独立于普通 Gemini，单独显示，悬浮明细含重置时间。
